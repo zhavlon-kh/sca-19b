@@ -1,8 +1,11 @@
 package kg.alatoo.springwebapp.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,28 +15,25 @@ public class Author {
     @Id
     @GeneratedValue
     private Long id;
-
     private String firstName;
     private String lastName;
-    @ManyToMany
-    @JsonBackReference
-    @JoinTable(name = "book_author",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "author_id"))
+
+    @JsonManagedReference
+    @ManyToMany(mappedBy = "authors")
     private Set<Book> books = new HashSet<>();
 
     public Author() {
+    }
+
+    public Author(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public Author(String firstName, String lastName, Set<Book> books) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.books = books;
-    }
-
-    public Author(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
     }
 
     public Long getId() {

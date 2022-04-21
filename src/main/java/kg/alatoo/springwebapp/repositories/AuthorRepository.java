@@ -3,5 +3,11 @@ package kg.alatoo.springwebapp.repositories;
 import kg.alatoo.springwebapp.domain.Author;
 import org.springframework.data.repository.CrudRepository;
 
-public interface AuthorRepository extends CrudRepository<Author,Long> {
+
+import java.util.List;
+
+public interface AuthorRepository extends CrudRepository<Author, Long> {
+
+    @Override
+    List<Author> findAll();
 }

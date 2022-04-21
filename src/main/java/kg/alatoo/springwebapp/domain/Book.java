@@ -1,23 +1,26 @@
 package kg.alatoo.springwebapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 public class Book {
-
     @Id
     @GeneratedValue
     private Long id;
     private String title;
     private String isbn;
 
-    @ManyToOne
-//    @JoinColumn(name = "publisher_idshka")
-    private Publisher publisher;
-
-    @ManyToMany(mappedBy = "books")
+    @JsonBackReference
+    @ManyToMany
+    @JoinTable(name = "book_author",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
     private Set<Author> authors = new HashSet<>();
 
     public Book() {
@@ -60,14 +63,5 @@ public class Book {
 
     public void setAuthors(Set<Author> authors) {
         this.authors = authors;
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", isbn='" + isbn + '\'' +
-                '}';
     }
 }

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+</head>
+<body>
+<h1 th:text="#{main.welcome}">Welcome to my web page</h1>
+
+<p  th:each="name : ${names}" th:text="#{main.hello(${name})}"></p>
+
+<p th:text="#{main.hello(#{${world}})}"></p>
+<a href="info.html" th:href="@{/about}">About</a>
+
+
+</body>
+</html>

@@ -7,7 +7,7 @@ import kg.alatoo.springwebapp.repositories.BookRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("startData")
 public class StartData implements CommandLineRunner {
 
     private final BookRepository bookRepository;

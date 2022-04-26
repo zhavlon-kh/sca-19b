@@ -5,7 +5,11 @@ import kg.alatoo.springwebapp.repositories.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +46,22 @@ public class MainController {
         authors.add(new Author("Islam", "Aubakirov"));
         authors.add(new Author("Islam", "Aubakirov"));
         model.addAttribute("authors",authorRepository.findAll());
+        model.addAttribute("newAuthor", new Author("Name","Surname"));
 
         return "authors";
     }
 
+    @PostMapping("addauthor")
+    public String addAuthor(
+//            @RequestBody MultiValueMap<String, String> requestBody,
+            @ModelAttribute Author author
+    ) {
+        /*System.out.println(requestBody.entrySet());
+        Author author = new Author();
+        author.setFirstName(requestBody.getFirst("firstName"));
+        author.setLastName(requestBody.getFirst("lastName"));*/
+        System.out.println(author.getFirstName() + " " + author.getLastName());
+        authorRepository.save(author);
+        return "redirect:authors";
+    }
 }

@@ -4,9 +4,7 @@ import kg.alatoo.springwebapp.domain.Author;
 import kg.alatoo.springwebapp.domain.Book;
 import kg.alatoo.springwebapp.repositories.AuthorRepository;
 import kg.alatoo.springwebapp.repositories.BookRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,5 +40,17 @@ public class MainRestController {
     @GetMapping("books")
     public List<Book> getBooks() {
         return bookRepository.findAll();
+    }
+
+    @GetMapping("getAuthor/{id}")
+    public Author getAuthor(@PathVariable("id") Long id) {
+        return authorRepository.findById(id).orElseThrow();
+    }
+
+    @DeleteMapping("deleteAuthor/{id}")
+    public void deleteAuthor(@PathVariable Long id) {
+        System.out.println(id);
+        authorRepository.deleteById(id);
+        System.out.println(authorRepository.findAll());
     }
 }

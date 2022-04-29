@@ -54,7 +54,7 @@ public class MainController {
 
     @PostMapping("addauthor")
     public String addAuthor(
-            @RequestBody MultiValueMap<String, String> requestBody,
+//            @RequestBody MultiValueMap<String, String> requestBody,
             @ModelAttribute Author author,
             RedirectAttributes redirectAttributes
     ) {
@@ -62,9 +62,10 @@ public class MainController {
         Author author = new Author();
         author.setFirstName(requestBody.getFirst("firstName"));
         author.setLastName(requestBody.getFirst("lastName"));*/
-        System.out.println(requestBody);
-        System.out.println(author);
+//        System.out.println(requestBody);
+        System.out.println("Before save" + author);
         authorRepository.save(author);
+        System.out.println("After save" + author);
         redirectAttributes.addAttribute("addedAuthor", author);
         return "redirect:authors";
     }

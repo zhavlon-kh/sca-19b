@@ -79,12 +79,12 @@
 								<label for="checkbox1"></label>
 							</span>
                     </td>
-                    <td th:text="*{id}">Book ID</td>
-                    <td th:text="*{firstName}">Book Name</td>
-                    <td th:text="*{lastName}">Book Surname</td>
+                    <td th:text="*{id}">Author ID</td>
+                    <td th:text="*{firstName}">Author Name</td>
+                    <td th:text="*{lastName}">Author Surname</td>
                     <td>
-                        <a th:href="@{editAuthor/{authorId}(authorId=*{id})}" href="#editEmployeeModal" class="edit" th:attr="data-authorid=*{id} "><i class="material-icons" title="Edit">&#xE254;</i></a>
-                        <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                        <a href="#editEmployeeModal" class="edit" data-toggle="modal" th:attr="data-authorid=*{id}"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                        <a href="#deleteEmployeeModal" class="delete" data-toggle="modal" th:attr="data-authorid=*{id}"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                     </td>
                 </tr>
                 </tbody>
@@ -138,22 +138,22 @@
 </div>
 <!-- Edit Modal HTML -->
 <div id="editEmployeeModal" class="modal fade">
-    <!--<div class="modal-dialog">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <form>
+            <form th:action="@{addauthor}" th:method="post">
                 <div class="modal-header">
                     <h4 class="modal-title">Edit Author</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="id" th:field="*{id}">
+                    <input id="id" type="hidden" name="id">
                     <div class="form-group">
                         <label>Name</label>
-                        <input type="text" class="form-control" required>
+                        <input id="name" type="text" class="form-control" name="firstName" required>
                     </div>
                     <div class="form-group">
                         <label>Surname</label>
-                        <input type="text" class="form-control" required>
+                        <input id="surname" type="text" class="form-control" name="lastName" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -162,7 +162,7 @@
                 </div>
             </form>
         </div>
-    </div>-->
+    </div>
 </div>
 <!-- Delete Modal HTML -->
 <div id="deleteEmployeeModal" class="modal fade">
@@ -174,12 +174,12 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to delete these Records?</p>
+                    <p id="deleteNotification">Are you sure you want to delete these Records?</p>
                     <p class="text-warning"><small>This action cannot be undone.</small></p>
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                    <input type="submit" class="btn btn-danger" value="Delete">
+                    <input type="submit" class="btn btn-danger" value="Delete" id="delete">
                 </div>
             </form>
         </div>
@@ -191,9 +191,29 @@
         var button = $(event.relatedTarget) // Button that triggered the modal
         var recipient = button.data('authorid') // Extract info from data-* attributes
 
-        var url = '/editAuthor/' + recipient;
+        console.log(recipient);
 
-        $("#editEmployeeModal").load(url);
+        $.get("api/getAuthor/" + recipient, function(data, status){
+            console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
+            $('#id').val(data.id);
+            $('#name').val(data.firstName);
+            $('#surname').val(data.lastName);
+        });
+    });
+
+    $('#deleteEmployeeModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var recipient = button.data('authorid') // Extract info from data-* attributes
+
+        console.log(recipient);
+
+        $.get("api/getAuthor/" + recipient, function(data, status){
+            console.log("Data: " + JSON.stringify(data) + "\nStatus: " + status);
+            $('#deleteNotification').text("Are you sure you want to delete "+ data.firstName + " " + data.lastName +"?")
+        });
+        $('#delete').click(function () {
+            $.ajax("/api/deleteAuthor/" + recipient,{type:'DELETE'})
+        })
     })
 </script>
 </body>

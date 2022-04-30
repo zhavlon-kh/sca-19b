@@ -53,4 +53,45 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
+@Configuration
+public class MySecurityConfig extends WebSecurityConfigurerAdapter {
+
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence rawPassword) {
+                return rawPassword.toString();
+            }
+
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                return rawPassword.equals(encodedPassword);
+            }
+        };
+    }
+    @Bean
+    @Override
+    protected UserDetailsService userDetailsService() {
+        return username -> {
+            UserDetails admin = User.builder()
+                    .username("admin")
+                    .password("admin")
+                    .roles("ADMIN")
+                    .passwordEncoder(password -> password)
+                    .build();
+
+            UserDetails user = User.builder()
+                    .username("user")
+                    .password("user")
+                    .roles("USER")
+                    .passwordEncoder(password -> password)
+                    .build();
+
+            return username.equalsIgnoreCase("admin")?admin:user;
+        };
+    }
 }

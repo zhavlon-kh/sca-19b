@@ -32,6 +32,11 @@ public class MainController {
         return "main";
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @GetMapping("about")
     public String about() {
         return "info";

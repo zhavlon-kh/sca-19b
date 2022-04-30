@@ -20,18 +20,18 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/authors")
-                        .authenticated()
-                    .antMatchers("/admin")
-                        .hasRole("ADMIN")
-                    .anyRequest().permitAll()
-                    .and()
+                .antMatchers("/authors")
+                .authenticated()
+                .antMatchers("/admin")
+                .hasRole("ADMIN")
+                .anyRequest().permitAll()
+                .and()
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/process-login")
                 .usernameParameter("user-login")
                 .passwordParameter("password")
-                    .permitAll().and()
+                .permitAll().and()
                 .logout().permitAll();
     }
 
@@ -55,25 +55,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-@Configuration
-public class MySecurityConfig extends WebSecurityConfigurerAdapter {
-
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new PasswordEncoder() {
-            @Override
-            public String encode(CharSequence rawPassword) {
-                return rawPassword.toString();
-            }
-
-            @Override
-            public boolean matches(CharSequence rawPassword, String encodedPassword) {
-                return rawPassword.equals(encodedPassword);
-            }
-        };
-    }
-    @Bean
+    /*@Bean
     @Override
     protected UserDetailsService userDetailsService() {
         return username -> {
@@ -93,5 +75,21 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
             return username.equalsIgnoreCase("admin")?admin:user;
         };
-    }
+    }*/
+
+    /*@Bean
+    public PasswordEncoder passwordEncoder() {
+        return new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence rawPassword) {
+                return rawPassword.toString();
+            }
+
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                return rawPassword.equals(encodedPassword);
+            }
+        };
+    }*/
+
 }
